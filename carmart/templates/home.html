@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="d-flex flex-wrap p-3 align-items-center mt-2">
+    <div class='col-6'>
+      <h1>Welcome to Zettexs' Blog</h1>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur rutrum varius ante ac rutrum. Nullam vitae felis ligula. Mauris vel nibh dapibus, mattis augue quis, pharetra tortor. Vestibulum sit amet ligula dignissim, maximus odio quis, fringilla massa. Sed vel nunc sit amet nulla convallis accumsan. Cras quis est non purus varius euismod. Suspendisse urna nibh, porta vel elementum et, tincidunt ac libero., ut aliquam erat rutrum consequat. Nullam tincidunt turpis ex, vel vestibulum libero vehicula quis. Nam vitae mollis lacus. Curabitur molestie consectetur condimentum. Sed faucibus ante in volutpat lobortis. Praesent tristique semper velit, vel tristique nibh maximus a. Nam laoreet ac neque nec tincidunt. Nullam at viverra dolor. Donec massa odio, ornare id nunc ut, pretium malesuada nunc.</p>
+    </div>
+    <div class='col-6 p-2'>
+      <img style='width:600px;' src="{% static 'p1.jpg'%}" />
+    </div> 
+</div>
+<div class="d-flex flex-wrap p-3 align-items-center mt-2">
+    {% for b in brands %}
+    <div class='form'>
+      <input 
+      type = 'hidden'
+      name = 'brands'
+      id = '{{b.id}}'
+      />
+      <label class='m-5 p-5' for='{{b.id}}'>
+        <h3><a href='{% url "brand_wise_cars" b.slug %}' class='text-decoration-none'>{{b.name}}</a></h3>
+      </label>
+    </div> 
+    {% endfor %}
+</div>
+<div class='col-10 p-3'>
+  <h4>{{vehicle | length}} results found</h4>
+  <div class="d-flex flex-wrap p-5 m-2">
+    {% for car in vehicle %}
+    
+    <div class="col-sm-3 m-2">
+      <img src='{{car.image.url}}' class='card-img-top' alt='...'/>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"><a class='text decoration-none' href='{% url "detail_post" car.id %}'>{{car.name}}</a></h5>
+          <p class="card-text">{{car.details | truncatewords:10}}</p>
+          <p class="card-text">Price : {{car.price}}</p>
+          <p class="card-text">Quantity: {{car.quantity}}</p>
+          <p>Brand : {{car.brand.name}}</p>
+          {% if user.is_authenticated %}
+          <button class='btn btn-primary'>Buy Now</button>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    
+    {% endfor %}
+  </div>
+</div>
+</div>
+{% endblock %}
